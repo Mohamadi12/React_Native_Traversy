@@ -27,8 +27,8 @@ const NotesScreen = () => {
       ...prevNotes,
       { id: Date.now().toString(), text: newNote },
     ]);
-    setModalVisible(false);
     setNewNote("");
+    setModalVisible(false);
   };
 
   return (
