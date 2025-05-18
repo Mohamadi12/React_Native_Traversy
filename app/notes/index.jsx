@@ -1,22 +1,34 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
 import AddNoteModal from "../component/AddNoteModal";
 import NoteList from "../component/NoteList";
+import noteService from "../../services/noteService";
+import { Alert } from "react-native";
 
 const NotesScreen = () => {
-  const [notes, setNotes] = useState([
-    { id: "1", text: "Note One" },
-    { id: "2", text: "Note Two" },
-    { id: "3", text: "Note Three" },
-  ]);
-
+  const [notes, setNotes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [newNote, setNewNote] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
+
+  const fetchNotes = async () => {
+    setLoading(true);
+    const response = await noteService.getNotes();
+
+    if (response.error) {
+      setError(response.error);
+      Alert.alert("Error", response.error);
+    } else {
+      setNotes(response.data);
+      setError(null);
+    }
+    setLoading(false);
+  };
 
   // Add New Note
   const addNote = () => {
@@ -48,7 +60,6 @@ const NotesScreen = () => {
           newNote={newNote}
           setNewNote={setNewNote}
         />
-        
       </TouchableOpacity>
     </View>
   );
@@ -73,5 +84,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 18,
-  }
+  },
 });
