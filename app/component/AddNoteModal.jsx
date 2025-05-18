@@ -14,7 +14,6 @@ const AddNoteModal = ({
   newNote,
   setNewNote,
 }) => {
-
   return (
     <View>
       {/* Modal */}
