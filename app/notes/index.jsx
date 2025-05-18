@@ -74,6 +74,25 @@ const NotesScreen = () => {
     ]);
   };
 
+  // Edit Note
+  const editNote = async (id, newText) => {
+    if (!newText.trim()) {
+      Alert.alert("Error", "Note text cannot be empty");
+      return;
+    }
+
+    const response = await noteService.updateNote(id, newText);
+    if (response.error) {
+      Alert.alert("Error", response.error);
+    } else {
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.$id === id ? { ...note, text: response.data.text } : note
+        )
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -85,7 +104,7 @@ const NotesScreen = () => {
           {notes.length === 0 ? (
             <Text style={styles.noNotesText}>You have no notes</Text>
           ) : (
-            <NoteList notes={notes} onDelete={deleteNote}/>
+            <NoteList notes={notes} onDelete={deleteNote} onEdit={editNote} />
           )}
         </>
       )}
@@ -95,20 +114,19 @@ const NotesScreen = () => {
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.addButtonText}>+ Add Note</Text>
-
-        {/* Modal */}
-        <AddNoteModal
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          addNote={addNote}
-          newNote={newNote}
-          setNewNote={setNewNote}
-        />
       </TouchableOpacity>
+
+      {/* Modal */}
+      <AddNoteModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        newNote={newNote}
+        setNewNote={setNewNote}
+        addNote={addNote}
+      />
     </View>
   );
 };
-
 export default NotesScreen;
 
 const styles = StyleSheet.create({

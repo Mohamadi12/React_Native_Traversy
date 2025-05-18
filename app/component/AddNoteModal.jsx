@@ -10,48 +10,42 @@ import {
 const AddNoteModal = ({
   modalVisible,
   setModalVisible,
-  addNote,
   newNote,
   setNewNote,
+  addNote,
 }) => {
   return (
-    <View>
-      {/* Modal */}
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Add a New Note</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter note..."
-              placeholderTextColor="#aaa"
-              value={newNote}
-              onChangeText={setNewNote}
-            />
+    <Modal
+      visible={modalVisible}
+      animationType="slide"
+      transparent
+      onRequestClose={() => setModalVisible(false)}
+    >
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Add a New Note</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter note..."
+            placeholderTextColor="#aaa"
+            value={newNote}
+            onChangeText={setNewNote}
+          />
+          <View style={styles.modalButtons}>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
 
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.saveButton} onPress={addNote}>
-                <Text style={styles.saveButtonText}>Save</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.saveButton} onPress={addNote}>
+              <Text style={styles.saveButtonText}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
