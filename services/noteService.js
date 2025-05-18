@@ -9,12 +9,30 @@ const colId = process.env.EXPO_PUBLIC_APPWRITE_COL_NOTES_ID;
 const noteService = {
   // Get Notes
   async getNotes() {
-    const response = await databaseService.getDocuments(
-      dbId,
-      colId
-    );
+    const response = await databaseService.getDocuments(dbId, colId);
 
     if (response.error) {
+      return { error: response.error };
+    }
+    return { data: response };
+  },
+
+  // Create Note
+  async addNote(text) {
+    if (!text) {
+      return { error: "Text is required" };
+    }
+    const data = {
+      text: text,
+      createdAt: new Date().toISOString(),
+    };
+    const response = await databaseService.createDocument(
+      dbId,
+      colId,
+      data,
+      ID.unique()
+    );
+    if (response?.error) {
       return { error: response.error };
     }
     return { data: response };

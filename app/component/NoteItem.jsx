@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 const NoteItem = ({ note }) => {
   return (
     <View style={styles.noteItem}>
-      <Text style={styles.noteText}>{note.text}</Text>
+      <Text style={styles.noteText}>{note?.text}</Text>
     </View>
   );
 };
